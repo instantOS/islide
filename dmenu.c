@@ -59,36 +59,6 @@ static Clr *scheme[SchemeLast];
 static int (*fstrncmp)(const char *, const char *, size_t) = strncmp;
 static char *(*fstrstr)(const char *, const char *) = strstr;
 
-static void
-appenditem(struct item *item, struct item **list, struct item **last)
-{
-	if (*last)
-		(*last)->right = item;
-	else
-		*list = item;
-
-	item->left = *last;
-	item->right = NULL;
-	*last = item;
-}
-
-static void
-calcoffsets(void)
-{
-	int i, n;
-
-	if (lines > 0)
-		n = lines * bh;
-	else
-		n = mw - (promptw + inputw + TEXTW("<") + TEXTW(">"));
-	/* calculate which items will begin the next page and previous page */
-	for (i = 0, next = curr; next; next = next->right)
-		if ((i += (lines > 0) ? bh : MIN(TEXTW(next->text), n)) > n)
-			break;
-	for (i = 0, prev = curr; prev && prev->left; prev = prev->left)
-		if ((i += (lines > 0) ? bh : MIN(TEXTW(prev->left->text), n)) > n)
-			break;
-}
 
 static void
 cleanup(void)
@@ -103,29 +73,29 @@ cleanup(void)
 	XCloseDisplay(dpy);
 }
 
-static char *
-cistrstr(const char *s, const char *sub)
-{
-	size_t len;
-
-	for (len = strlen(sub); *s; s++)
-		if (!strncasecmp(s, sub, len))
-			return (char *)s;
-	return NULL;
-}
-
 static void
 drawmenu(void)
 {
 	unsigned int curpos;
 	struct item *item;
 	int x = 0, y = 0, w;
+	char valuestr[100];
+	char outputstr[100];
+	sprintf(valuestr, "  %d", value); 
+
+	if (prompt) {
+		strcpy(outputstr, prompt);
+		strncat(outputstr, valuestr, 10);
+	} else {
+		strcpy(outputstr, valuestr);
+	}
 
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_rect(drw, 0, 0, mw, mh, 1, 1);
 	drw_setscheme(drw, scheme[SchemeSel]);
 	drw_rect(drw, 0, 0, value * (mw / 100), mh, 1, 1);
-	drw_text(drw, 0,0,200, mh, 10, "", 0);
+
+	drw_text(drw, 0,0,200, mh, 10, outputstr, 0);
 	drw_map(drw, win, 0, 0, mw, mh);
 }
 
@@ -173,7 +143,6 @@ keypress(XKeyEvent *ev)
 	KeySym ksym;
 	Status status;
 
-
 	len = XmbLookupString(xic, ev, buf, sizeof buf, &ksym, &status);
 	switch (ksym)
 	{
@@ -184,37 +153,6 @@ keypress(XKeyEvent *ev)
 	default:
 		break;
 	}
-}
-
-
-
-static void
-readstdin(void)
-{
-	char buf[sizeof text], *p;
-	size_t i, imax = 0, size = 0;
-	unsigned int tmpmax = 0;
-
-	/* read each line from stdin and add it to the item list */
-	for (i = 0; fgets(buf, sizeof buf, stdin); i++) {
-		if (i + 1 >= size / sizeof *items)
-			if (!(items = realloc(items, (size += BUFSIZ))))
-				die("cannot realloc %u bytes:", size);
-		if ((p = strchr(buf, '\n')))
-			*p = '\0';
-		if (!(items[i].text = strdup(buf)))
-			die("cannot strdup %u bytes:", strlen(buf) + 1);
-		items[i].out = 0;
-		drw_font_getexts(drw->fonts, buf, strlen(buf), &tmpmax, NULL);
-		if (tmpmax > inputw) {
-			inputw = tmpmax;
-			imax = i;
-		}
-	}
-	if (items)
-		items[i].text = NULL;
-	inputw = items ? TEXTW(items[imax].text) : 0;
-	lines = MIN(lines, i);
 }
 
 static void
@@ -387,7 +325,6 @@ main(int argc, char *argv[])
 			fast = 1;
 		else if (!strcmp(argv[i], "-i")) { /* case-insensitive item matching */
 			fstrncmp = strncasecmp;
-			fstrstr = cistrstr;
 		} else if (i + 1 == argc)
 			usage();
 		/* these options take one argument */
