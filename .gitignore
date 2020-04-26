@@ -1,4 +1,5 @@
 *.o
 dmenu
+islide
 config.h
 stest
