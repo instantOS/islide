@@ -98,7 +98,7 @@ drawmenu(void)
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_rect(drw, 0, 0, mw, mh, 1, 1);
 	drw_setscheme(drw, scheme[SchemeSel]);
-	drw_rect(drw, 0, 0, value * (mw / 100), mh, 1, 1);
+	drw_rect(drw, 0, 0, value * (mw / maxvalue), mh, 1, 1);
 
 	drw_text(drw, 0,0,200, mh, 10, outputstr, 0);
 	drw_map(drw, win, 0, 0, mw, mh);
@@ -151,26 +151,26 @@ static void valuetrigger() {
 	char valuestring[100];
 	char finalcmd[1024];
 
-	sprintf(valuestring, "%d", value); 
-	strcpy(finalcmd, command);
+	sprintf(valuestring, "%d", value);
+	if (command)
+		strcpy(finalcmd, command);
+	else
+		strcpy(finalcmd, "/opt/instantos/menus/dm/p.sh ");		
 	strncat(finalcmd, valuestring, 10);
 	if (suffix)
 		strncat(finalcmd, suffix, 1000);
-	fprintf(stderr, finalcmd);
 	spawn(finalcmd);
-
 }
 
 static void incvalue(int increment)  {
 
-	if (value + increment >= 0 && value + increment <= 100)
+	if (value + increment >= 0 && value + increment <= maxvalue)
 		value+=increment;
 	else
 		return;
 	valuetrigger();
 	drawmenu();
 }
-
 
 int
 getrootptr(int *x, int *y)
@@ -206,9 +206,8 @@ dragmouse() {
 			if (!lastx)
 				lastx = ev.xmotion.x_root;
 			
-			if (abs(lastx - ev.xmotion.x_root) > (mw / 100)) {
-				fprintf(stderr, "helala");
-				value = ev.xmotion.x_root / (mw / 100);
+			if (abs(lastx - ev.xmotion.x_root) > (mw / maxvalue)) {
+				value = ev.xmotion.x_root / (mw / maxvalue);
 				drawmenu();
 				valuetrigger();
 				lastx = ev.xmotion.x_root;
@@ -271,13 +270,13 @@ buttonpress(XEvent *ev)
 				exit(0);
 				break;
 			case Button1:
-				value = ev->xbutton.x_root / (mw / 100);
+				value = ev->xbutton.x_root / (mw / maxvalue);
 				valuetrigger();
 				drawmenu();
 				dragmouse();
 				break;
 			case Button2:
-				value = 50;
+				value = startvalue;
 				drawmenu();
 				break;
 			case Button5:
@@ -349,6 +348,8 @@ setup(void)
 #endif
 	if (startvalue)
 		value = startvalue;
+	else
+		value = maxvalue / 2;
 	/* init appearance */
 	for (j = 0; j < SchemeLast; j++)
 		scheme[j] = drw_scm_create(drw, colors[j], 2);
@@ -468,7 +469,7 @@ main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "-s"))   /* number of lines in vertical list */
 			startvalue = atoi(argv[++i]);
 		else if (!strcmp(argv[i], "-m"))
-			mon = atoi(argv[++i]);
+			maxvalue = atoi(argv[++i]);
 		else if (!strcmp(argv[i], "-p"))   /* adds prompt to left of input field */
 			prompt = argv[++i];
 		else if (!strcmp(argv[i], "-c"))   /* adds prompt to left of input field */
