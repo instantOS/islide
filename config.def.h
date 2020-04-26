@@ -7,6 +7,9 @@ static const char *fonts[] = {
 	"monospace:size=10"
 };
 static const char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
+static const char *command      = NULL;      
+static const char *suffix      = NULL;    
+
 static const char *colors[SchemeLast][2] = {
 	/*     fg         bg       */
 	[SchemeNorm] = { "#bbbbbb", "#292F3A" },
@@ -15,6 +18,7 @@ static const char *colors[SchemeLast][2] = {
 };
 /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
 static unsigned int lines      = 0;
+static unsigned int startvalue      = 0;
 
 /*
  * Characters not considered part of a word while deleting words

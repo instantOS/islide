@@ -139,10 +139,35 @@ grabkeyboard(void)
 	die("cannot grab keyboard");
 }
 
+static void spawn(char *executable) {
+	if (fork() == 0) {
+		setsid();
+		system(executable);
+		exit(0);
+	}
+}
+
+static void valuetrigger() {
+	char valuestring[100];
+	char finalcmd[1024];
+
+	sprintf(valuestring, "%d", value); 
+	strcpy(finalcmd, command);
+	strncat(finalcmd, valuestring, 10);
+	if (suffix)
+		strncat(finalcmd, suffix, 1000);
+	fprintf(stderr, finalcmd);
+	spawn(finalcmd);
+
+}
 
 static void incvalue(int increment)  {
+
 	if (value + increment >= 0 && value + increment <= 100)
 		value+=increment;
+	else
+		return;
+	valuetrigger();
 	drawmenu();
 }
 
@@ -185,6 +210,7 @@ dragmouse() {
 				fprintf(stderr, "helala");
 				value = ev.xmotion.x_root / (mw / 100);
 				drawmenu();
+				valuetrigger();
 				lastx = ev.xmotion.x_root;
 			}
 			break;
@@ -193,11 +219,14 @@ dragmouse() {
 	XUngrabPointer(dpy, CurrentTime);
 }
 
+
 static void
 keypress(XKeyEvent *ev)
 {
 	char buf[32];
+
 	int len;
+
 	KeySym ksym;
 	Status status;
 
@@ -205,7 +234,7 @@ keypress(XKeyEvent *ev)
 	switch (ksym)
 	{
 	case XK_e:
-		fprintf(stderr, "hello");
+
 		break;
 	case XK_Left:
 		incvalue(-5);
@@ -219,7 +248,12 @@ keypress(XKeyEvent *ev)
 	case XK_Down:
 		incvalue(-20);
 		break;
-
+	case XK_plus:
+		incvalue(1);
+		break;
+	case XK_minus:
+		incvalue(-1);
+		break;
 	default:
 		cleanup();
 		exit(0);
@@ -237,6 +271,9 @@ buttonpress(XEvent *ev)
 				exit(0);
 				break;
 			case Button1:
+				value = ev->xbutton.x_root / (mw / 100);
+				valuetrigger();
+				drawmenu();
 				dragmouse();
 				break;
 			case Button2:
@@ -310,6 +347,8 @@ setup(void)
 	Window pw;
 	int a, di, n, area = 0;
 #endif
+	if (startvalue)
+		value = startvalue;
 	/* init appearance */
 	for (j = 0; j < SchemeLast; j++)
 		scheme[j] = drw_scm_create(drw, colors[j], 2);
@@ -426,12 +465,16 @@ main(int argc, char *argv[])
 		} else if (i + 1 == argc)
 			usage();
 		/* these options take one argument */
-		else if (!strcmp(argv[i], "-l"))   /* number of lines in vertical list */
-			lines = atoi(argv[++i]);
+		else if (!strcmp(argv[i], "-s"))   /* number of lines in vertical list */
+			startvalue = atoi(argv[++i]);
 		else if (!strcmp(argv[i], "-m"))
 			mon = atoi(argv[++i]);
 		else if (!strcmp(argv[i], "-p"))   /* adds prompt to left of input field */
 			prompt = argv[++i];
+		else if (!strcmp(argv[i], "-c"))   /* adds prompt to left of input field */
+			command = argv[++i];
+		else if (!strcmp(argv[i], "-a"))   /* adds prompt to left of input field */
+			suffix = argv[++i];
 		else if (!strcmp(argv[i], "-fn"))  /* font or font set */
 			fonts[0] = argv[++i];
 		else if (!strcmp(argv[i], "-nb"))  /* normal background color */
