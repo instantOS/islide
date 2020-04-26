@@ -135,6 +135,13 @@ grabkeyboard(void)
 }
 
 
+static void incvalue(int increment)  {
+	if (value + increment >= 0 && value + increment <= 100)
+		value+=increment;
+	drawmenu();
+}
+
+
 static void
 keypress(XKeyEvent *ev)
 {
@@ -149,10 +156,55 @@ keypress(XKeyEvent *ev)
 	case XK_e:
 		fprintf(stderr, "hello");
 		break;
-	
+	case XK_Left:
+		incvalue(-5);
+		break;
+	case XK_Right:
+		incvalue(5);
+		break;
+	case XK_Up:
+		incvalue(20);
+		break;
+	case XK_Down:
+		incvalue(-20);
+		break;
+
 	default:
+		cleanup();
+		exit(0);
 		break;
 	}
+}
+
+static void
+buttonpress(XEvent *ev)
+{
+		switch (ev->xbutton.button)
+			{
+			case Button3:
+				cleanup();
+				exit(0);
+				break;
+			case Button1:
+				value = ev->xbutton.x_root / (mw / 100);
+				drawmenu();
+				break;
+			case Button2:
+				value = 50;
+				drawmenu();
+				break;
+			case Button5:
+				incvalue(-5);
+				break;
+			case Button4:
+				incvalue(5);
+				break;
+
+			default:
+				cleanup();
+				exit(0);
+				break;
+			}
 }
 
 static void
@@ -186,14 +238,7 @@ run(void)
 				XRaiseWindow(dpy, win);
 			break;
 		case ButtonPress:
-			
-			if (ev.xbutton.button == Button3) {
-				cleanup();
-				exit(0);
-			}
-			value = ev.xbutton.x_root / (mw / 100);
-			fprintf(stderr, "hello %d", value);
-			drawmenu();
+			buttonpress(&ev);
 			break;
 
 		}
