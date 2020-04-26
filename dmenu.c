@@ -15,6 +15,7 @@
 #include <X11/extensions/Xinerama.h>
 #endif
 #include <X11/Xft/Xft.h>
+#include <X11/cursorfont.h>
 
 #include "drw.h"
 #include "util.h"
@@ -24,9 +25,12 @@
                              * MAX(0, MIN((y)+(h),(r).y_org+(r).height) - MAX((y),(r).y_org)))
 #define LENGTH(X)             (sizeof X / sizeof X[0])
 #define TEXTW(X)              (drw_fontset_getwidth(drw, (X)) + lrpad)
+#define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
+#define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
 
 /* enums */
 enum { SchemeNorm, SchemeSel, SchemeOut, SchemeLast }; /* color schemes */
+enum { CurNormal, CurMove, CurLast }; /* cursor */
 
 struct item {
 	char *text;
@@ -53,6 +57,7 @@ static XIC xic;
 
 static Drw *drw;
 static Clr *scheme[SchemeLast];
+static Cur *mcursor[CurLast];
 
 #include "config.h"
 
@@ -142,6 +147,52 @@ static void incvalue(int increment)  {
 }
 
 
+int
+getrootptr(int *x, int *y)
+{
+	int di;
+	unsigned int dui;
+	Window dummy;
+
+	return XQueryPointer(dpy, root, &dummy, &dummy, x, y, &di, &di, &dui);
+}
+
+static void
+dragmouse() {
+	int x, y;
+	XEvent ev;
+	Time lasttime = 0;
+	int lastx;
+	if (XGrabPointer(dpy, root, False, MOUSEMASK, GrabModeAsync, GrabModeAsync,
+		None, mcursor[CurMove]->cursor, CurrentTime) != GrabSuccess)
+		return;
+	if (!getrootptr(&x, &y))
+		return;
+	do {
+		XMaskEvent(dpy, MOUSEMASK|ExposureMask|SubstructureRedirectMask, &ev);
+		switch(ev.type) {
+		case ConfigureRequest:
+		case Expose:
+		case MapRequest:
+		case MotionNotify:
+			if ((ev.xmotion.time - lasttime) <= (1000 / 60))
+				continue;
+			lasttime = ev.xmotion.time;
+			if (!lastx)
+				lastx = ev.xmotion.x_root;
+			
+			if (abs(lastx - ev.xmotion.x_root) > (mw / 100)) {
+				fprintf(stderr, "helala");
+				value = ev.xmotion.x_root / (mw / 100);
+				drawmenu();
+				lastx = ev.xmotion.x_root;
+			}
+			break;
+		}
+	} while (ev.type != ButtonRelease);
+	XUngrabPointer(dpy, CurrentTime);
+}
+
 static void
 keypress(XKeyEvent *ev)
 {
@@ -186,8 +237,7 @@ buttonpress(XEvent *ev)
 				exit(0);
 				break;
 			case Button1:
-				value = ev->xbutton.x_root / (mw / 100);
-				drawmenu();
+				dragmouse();
 				break;
 			case Button2:
 				value = 50;
@@ -240,10 +290,10 @@ run(void)
 		case ButtonPress:
 			buttonpress(&ev);
 			break;
-
 		}
 	}
 }
+
 
 static void
 setup(void)
@@ -341,6 +391,9 @@ setup(void)
 		}
 		grabfocus();
 	}
+	mcursor[CurNormal] = drw_cur_create(drw, XC_left_ptr);
+	mcursor[CurMove] = drw_cur_create(drw, XC_fleur);
+
 	drw_resize(drw, mw, mh);
 	drawmenu();
 }
