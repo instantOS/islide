@@ -215,6 +215,10 @@ dragmouse() {
 			break;
 		}
 	} while (ev.type != ButtonRelease);
+	if (ev.xmotion.y_root > 100) {
+		cleanup();
+		exit(1);
+	}
 	XUngrabPointer(dpy, CurrentTime);
 }
 
@@ -232,12 +236,13 @@ keypress(XKeyEvent *ev)
 	len = XmbLookupString(xic, ev, buf, sizeof buf, &ksym, &status);
 	switch (ksym)
 	{
-	case XK_e:
-
-		break;
+	case XK_h:
+	case XK_j:
 	case XK_Left:
 		incvalue(-5);
 		break;
+	case XK_l:
+	case XK_k:
 	case XK_Right:
 		incvalue(5);
 		break;
