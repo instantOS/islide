@@ -1,4 +1,4 @@
-# dmenu version
+# islide version
 VERSION = 4.9
 
 # paths

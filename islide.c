@@ -345,7 +345,7 @@ setup(void)
 	XIM xim;
 	Window w, dw, *dws;
 	XWindowAttributes wa;
-	XClassHint ch = {"dmenu", "dmenu"};
+	XClassHint ch = {"islide", "islide"};
 #ifdef XINERAMA
 	XineramaScreenInfo *info;
 	Window pw;
