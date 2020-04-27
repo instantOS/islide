@@ -41,7 +41,7 @@ struct item {
 static char text[BUFSIZ] = "";
 static int value = 50;
 static char *embed;
-static int bh, mw, mh;
+static int bh, mw, mh, mx;
 static int inputw = 0, promptw;
 static int lrpad; /* sum of left and right padding */
 static size_t cursor;
@@ -207,7 +207,7 @@ dragmouse() {
 				lastx = ev.xmotion.x_root;
 			
 			if (abs(lastx - ev.xmotion.x_root) > (mw / maxvalue)) {
-				value = ev.xmotion.x_root / (mw / maxvalue);
+				value = (ev.xmotion.x_root - mx) / (mw / maxvalue);
 				drawmenu();
 				valuetrigger();
 				lastx = ev.xmotion.x_root;
@@ -327,7 +327,7 @@ buttonpress(XEvent *ev)
 				exit(0);
 				break;
 			case Button1:
-				value = ev->xbutton.x_root / (mw / maxvalue);
+				value = (ev->xbutton.x_root - mx) / (mw / maxvalue);
 				valuetrigger();
 				drawmenu();
 				dragmouse();
@@ -459,6 +459,7 @@ setup(void)
 		y = topbar ? 0 : wa.height - mh;
 		mw = wa.width;
 	}
+	mx = x;
 	promptw = (prompt && *prompt) ? TEXTW(prompt) - lrpad / 4 : 0;
 	inputw = MIN(inputw, mw/3);
 
