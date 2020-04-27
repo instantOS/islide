@@ -155,7 +155,7 @@ static void valuetrigger() {
 	if (command)
 		strcpy(finalcmd, command);
 	else
-		strcpy(finalcmd, "/opt/instantos/menus/dm/p.sh ");		
+		strcpy(finalcmd, "/opt/instantos/menus/ex/p.sh ");		
 	strncat(finalcmd, valuestring, 10);
 	if (suffix)
 		strncat(finalcmd, suffix, 1000);
@@ -222,6 +222,14 @@ dragmouse() {
 	XUngrabPointer(dpy, CurrentTime);
 }
 
+static void typenumber(int digit) {
+	if (keyboardvalue * 10 + digit >= maxvalue) {
+		keyboardvalue = maxvalue;
+	} else {
+		keyboardvalue = keyboardvalue * 10;
+		keyboardvalue += digit;
+	}
+}
 
 static void
 keypress(XKeyEvent *ev)
@@ -258,6 +266,50 @@ keypress(XKeyEvent *ev)
 	case XK_minus:
 		incvalue(-1);
 		break;
+	case XK_0:
+		if (!keyboardvalue) {
+			value = 0;
+			valuetrigger();
+			drawmenu();
+		} else {
+			typenumber(0);
+		}
+		break;
+	case XK_1:
+		typenumber(1);
+		break;
+	case XK_2:
+		typenumber(2);
+		break;
+	case XK_3:
+		typenumber(3);
+		break;
+	case XK_4:
+		typenumber(4);
+		break;
+	case XK_5:
+		typenumber(5);
+		break;
+	case XK_6:
+		typenumber(6);
+		break;
+	case XK_7:
+		typenumber(7);
+		break;
+	case XK_8:
+		typenumber(8);
+		break;
+	case XK_9:
+		typenumber(9);
+		break;
+	case XK_Return:
+		if (!keyboardvalue)
+			break;
+		value = keyboardvalue;
+		keyboardvalue = 0;
+		valuetrigger();
+		drawmenu();
+		break;
 	default:
 		cleanup();
 		exit(0);
@@ -282,6 +334,7 @@ buttonpress(XEvent *ev)
 				break;
 			case Button2:
 				value = startvalue;
+				valuetrigger();
 				drawmenu();
 				break;
 			case Button5:

@@ -20,6 +20,7 @@ static const char *colors[SchemeLast][2] = {
 static unsigned int lines      = 0;
 static unsigned int startvalue      = 0;
 static unsigned int maxvalue      = 100;
+static unsigned int keyboardvalue      = 0;
 
 /*
  * Characters not considered part of a word while deleting words
