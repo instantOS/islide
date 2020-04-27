@@ -100,7 +100,7 @@ drawmenu(void)
 	drw_setscheme(drw, scheme[SchemeSel]);
 	drw_rect(drw, 0, 0, value * (mw / maxvalue), mh, 1, 1);
 
-	drw_text(drw, 0,0,200, mh, 10, outputstr, 0);
+	drw_text(drw, 0,0,TEXTW(outputstr), mh, 10, outputstr, 0);
 	drw_map(drw, win, 0, 0, mw, mh);
 }
 
