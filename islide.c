@@ -155,7 +155,7 @@ static void valuetrigger() {
 	if (command)
 		strcpy(finalcmd, command);
 	else
-		strcpy(finalcmd, "/opt/instantos/menus/ex/p.sh ");		
+		strcpy(finalcmd, "/usr/share/instantassist/utils/p.sh ");		
 	strncat(finalcmd, valuestring, 10);
 	if (suffix)
 		strncat(finalcmd, suffix, 1000);
