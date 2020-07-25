@@ -49,6 +49,7 @@ static struct item *items = NULL;
 static struct item *matches, *matchend;
 static struct item *prev, *curr, *next, *sel;
 static int mon = -1, screen;
+static int modstat = 0;
 
 static Atom clip, utf8;
 static Display *dpy;
@@ -223,11 +224,22 @@ dragmouse() {
 }
 
 static void typenumber(int digit) {
-	if (keyboardvalue * 10 + digit >= maxvalue) {
-		keyboardvalue = maxvalue;
+	if (modstat) {
+		if (keyboardvalue * 10 + digit >= maxvalue) {
+			keyboardvalue = maxvalue;
+		} else {
+			keyboardvalue = keyboardvalue * 10;
+			keyboardvalue += digit;
+		}
 	} else {
-		keyboardvalue = keyboardvalue * 10;
-		keyboardvalue += digit;
+		if (digit == 0)
+			digit = 1;
+		else
+			digit -=1;
+
+		value = (maxvalue / 10) * digit;
+		valuetrigger();
+		drawmenu();
 	}
 }
 
@@ -242,78 +254,83 @@ keypress(XKeyEvent *ev)
 	Status status;
 
 	len = XmbLookupString(xic, ev, buf, sizeof buf, &ksym, &status);
-	switch (ksym)
-	{
-	case XK_h:
-	case XK_j:
-	case XK_Left:
-		incvalue(-5);
-		break;
-	case XK_l:
-	case XK_k:
-	case XK_Right:
-		incvalue(5);
-		break;
-	case XK_Up:
-		incvalue(20);
-		break;
-	case XK_Down:
-		incvalue(-20);
-		break;
-	case XK_plus:
-		incvalue(1);
-		break;
-	case XK_minus:
-		incvalue(-1);
-		break;
-	case XK_0:
-		if (!keyboardvalue) {
-			value = 0;
+	if (ksym == XK_Shift_L) {
+		modstat = 1;
+		return;
+	} else {
+		switch (ksym)
+		{
+		case XK_h:
+		case XK_j:
+		case XK_Left:
+			incvalue(-5);
+			break;
+		case XK_l:
+		case XK_k:
+		case XK_Right:
+			incvalue(5);
+			break;
+		case XK_Up:
+			incvalue(20);
+			break;
+		case XK_Down:
+			incvalue(-20);
+			break;
+		case XK_plus:
+			incvalue(1);
+			break;
+		case XK_minus:
+			incvalue(-1);
+			break;
+		case XK_0:
+			if (!keyboardvalue) {
+				value = 0;
+				valuetrigger();
+				drawmenu();
+			} else {
+				typenumber(0);
+			}
+			break;
+		case XK_1:
+			typenumber(1);
+			break;
+		case XK_2:
+			typenumber(2);
+			break;
+		case XK_3:
+			typenumber(3);
+			break;
+		case XK_4:
+			typenumber(4);
+			break;
+		case XK_5:
+			typenumber(5);
+			break;
+		case XK_6:
+			typenumber(6);
+			break;
+		case XK_7:
+			typenumber(7);
+			break;
+		case XK_8:
+			typenumber(8);
+			break;
+		case XK_9:
+			typenumber(9);
+			break;
+		case XK_Return:
+			if (!keyboardvalue)
+				break;
+			value = keyboardvalue;
+			keyboardvalue = 0;
 			valuetrigger();
 			drawmenu();
-		} else {
-			typenumber(0);
-		}
-		break;
-	case XK_1:
-		typenumber(1);
-		break;
-	case XK_2:
-		typenumber(2);
-		break;
-	case XK_3:
-		typenumber(3);
-		break;
-	case XK_4:
-		typenumber(4);
-		break;
-	case XK_5:
-		typenumber(5);
-		break;
-	case XK_6:
-		typenumber(6);
-		break;
-	case XK_7:
-		typenumber(7);
-		break;
-	case XK_8:
-		typenumber(8);
-		break;
-	case XK_9:
-		typenumber(9);
-		break;
-	case XK_Return:
-		if (!keyboardvalue)
 			break;
-		value = keyboardvalue;
-		keyboardvalue = 0;
-		valuetrigger();
-		drawmenu();
-		break;
-	default:
-		cleanup();
-		exit(0);
-		break;
+		default:
+			cleanup();
+			exit(0);
+			break;
+		}
 	}
 }
 
