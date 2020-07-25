@@ -233,11 +233,11 @@ static void typenumber(int digit) {
 		}
 	} else {
 		if (digit == 0)
-			digit = 1;
+			digit = 9;
 		else
 			digit -=1;
 
-		value = (maxvalue / 10) * digit;
+		value = (maxvalue / 9) * digit;
 		valuetrigger();
 		drawmenu();
 	}
@@ -283,7 +283,7 @@ keypress(XKeyEvent *ev)
 			incvalue(-1);
 			break;
 		case XK_0:
-			if (!keyboardvalue) {
+			if (!keyboardvalue && modstat) {
 				value = 0;
 				valuetrigger();
 				drawmenu();
