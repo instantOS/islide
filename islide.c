@@ -263,12 +263,12 @@ keypress(XKeyEvent *ev)
 		case XK_h:
 		case XK_j:
 		case XK_Left:
-			incvalue(-5);
+			incvalue(modstat ? -1 : -5);
 			break;
 		case XK_l:
 		case XK_k:
 		case XK_Right:
-			incvalue(5);
+			incvalue(modstat ? 1 : 5);
 			break;
 		case XK_Up:
 			incvalue(20);
