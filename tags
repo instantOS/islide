@@ -1,0 +1,209 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/a3c87ab5/
+$(OBJ)	Makefile	/^$(OBJ): arg.h config.h config.mk drw.h$/;"	t
+.c.o	Makefile	/^.c.o:$/;"	t
+ARGBEGIN	arg.h	/^#define ARGBEGIN	/;"	d
+ARGC	arg.h	/^#define ARGC(/;"	d
+ARGEND	arg.h	/^#define ARGEND	/;"	d
+ARGF	arg.h	/^#define ARGF(/;"	d
+ARG_H__	arg.h	/^#define ARG_H__$/;"	d
+BETWEEN	util.h	/^#define BETWEEN(/;"	d
+BUTTONMASK	islide.c	/^#define BUTTONMASK /;"	d	file:
+CC	config.mk	/^CC = cc$/;"	m
+CFLAGS	config.mk	/^CFLAGS   = -std=c99 -pedantic -Wall -Os $(INCS) $(CPPFLAGS)$/;"	m
+CPPFLAGS	config.mk	/^CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_XOPEN_SOURCE=700 -D_POSIX_C_SOURCE=200809L -DVERSI/;"	m
+Clr	drw.h	/^typedef XftColor Clr;$/;"	t	typeref:typename:XftColor
+ColBg	drw.h	/^enum { ColFg, ColBg }; \/* Clr scheme index *\/$/;"	e	enum:__anon0f5116480203
+ColFg	drw.h	/^enum { ColFg, ColBg }; \/* Clr scheme index *\/$/;"	e	enum:__anon0f5116480203
+Cur	drw.h	/^} Cur;$/;"	t	typeref:struct:__anon0f5116480108
+CurLast	islide.c	/^enum { CurNormal, CurMove, CurLast }; \/* cursor *\/$/;"	e	enum:__anonfaae9fb00203	file:
+CurMove	islide.c	/^enum { CurNormal, CurMove, CurLast }; \/* cursor *\/$/;"	e	enum:__anonfaae9fb00203	file:
+CurNormal	islide.c	/^enum { CurNormal, CurMove, CurLast }; \/* cursor *\/$/;"	e	enum:__anonfaae9fb00203	file:
+DESCRIPTION	islide.1	/^.SH DESCRIPTION$/;"	s	title:DMENU
+DMENU	islide.1	/^.TH DMENU 1 dmenu\\-VERSION$/;"	t
+Drw	drw.h	/^} Drw;$/;"	t	typeref:struct:__anon0f5116480308
+EARGF	arg.h	/^#define EARGF(/;"	d
+FREETYPEINC	config.mk	/^FREETYPEINC = \/usr\/include\/freetype2$/;"	m
+FREETYPELIBS	config.mk	/^FREETYPELIBS = -lfontconfig -lXft$/;"	m
+Fnt	drw.h	/^typedef struct Fnt {$/;"	s
+Fnt	drw.h	/^} Fnt;$/;"	t	typeref:struct:Fnt
+INCS	config.mk	/^INCS = -I$(X11INC) -I$(FREETYPEINC)$/;"	m
+INTERSECT	islide.c	/^#define INTERSECT(/;"	d	file:
+LDFLAGS	config.mk	/^LDFLAGS  = $(LIBS)$/;"	m
+LENGTH	islide.c	/^#define LENGTH(/;"	d	file:
+LIBS	config.mk	/^LIBS = -L$(X11LIB) -lX11 $(XINERAMALIBS) $(FREETYPELIBS)$/;"	m
+MANPREFIX	config.mk	/^MANPREFIX = $(PREFIX)\/share\/man$/;"	m
+MAX	util.h	/^#define MAX(/;"	d
+MIN	util.h	/^#define MIN(/;"	d
+MOUSEMASK	islide.c	/^#define MOUSEMASK /;"	d	file:
+NAME	islide.1	/^.SH NAME$/;"	s	title:DMENU
+OBJ	Makefile	/^OBJ = $(SRC:.c=.o)$/;"	m
+OPTIONS	islide.1	/^.SH OPTIONS$/;"	s	title:DMENU
+PREFIX	config.mk	/^PREFIX = \/usr\/$/;"	m
+SEE	islide.1	/^.SH SEE ALSO$/;"	s	title:DMENU
+SRC	Makefile	/^SRC = drw.c islide.c util.c$/;"	m
+SYNOPSIS	islide.1	/^.SH SYNOPSIS$/;"	s	title:DMENU
+SchemeLast	islide.c	/^enum { SchemeNorm, SchemeSel, SchemeOut, SchemeLast }; \/* color schemes *\/$/;"	e	enum:__anonfaae9fb00103	file:
+SchemeNorm	islide.c	/^enum { SchemeNorm, SchemeSel, SchemeOut, SchemeLast }; \/* color schemes *\/$/;"	e	enum:__anonfaae9fb00103	file:
+SchemeOut	islide.c	/^enum { SchemeNorm, SchemeSel, SchemeOut, SchemeLast }; \/* color schemes *\/$/;"	e	enum:__anonfaae9fb00103	file:
+SchemeSel	islide.c	/^enum { SchemeNorm, SchemeSel, SchemeOut, SchemeLast }; \/* color schemes *\/$/;"	e	enum:__anonfaae9fb00103	file:
+TEXTW	islide.c	/^#define TEXTW(/;"	d	file:
+USAGE	islide.1	/^.SH USAGE$/;"	s	title:DMENU
+UTF_INVALID	drw.c	/^#define UTF_INVALID /;"	d	file:
+UTF_SIZ	drw.c	/^#define UTF_SIZ /;"	d	file:
+VERSION	config.mk	/^VERSION = 4.9$/;"	m
+X11INC	config.mk	/^X11INC = \/usr\/X11R6\/include$/;"	m
+X11LIB	config.mk	/^X11LIB = \/usr\/X11R6\/lib$/;"	m
+XINERAMAFLAGS	config.mk	/^XINERAMAFLAGS = -DXINERAMA$/;"	m
+XINERAMALIBS	config.mk	/^XINERAMALIBS  = -lXinerama$/;"	m
+__anon0f5116480108	drw.h	/^typedef struct {$/;"	s
+__anon0f5116480203	drw.h	/^enum { ColFg, ColBg }; \/* Clr scheme index *\/$/;"	g
+__anon0f5116480308	drw.h	/^typedef struct {$/;"	s
+__anonfaae9fb00103	islide.c	/^enum { SchemeNorm, SchemeSel, SchemeOut, SchemeLast }; \/* color schemes *\/$/;"	g	file:
+__anonfaae9fb00203	islide.c	/^enum { CurNormal, CurMove, CurLast }; \/* cursor *\/$/;"	g	file:
+all	Makefile	/^all: clean options islide$/;"	t
+array	.vscode/settings.json	/^        "array": "c",$/;"	s	object:files.associations
+bh	islide.c	/^static int bh, mw, mh, mx;$/;"	v	typeref:typename:int	file:
+buttonpress	islide.c	/^buttonpress(XEvent *ev)$/;"	f	typeref:typename:void	file:
+clean	Makefile	/^clean:$/;"	t
+cleanup	islide.c	/^cleanup(void)$/;"	f	typeref:typename:void	file:
+clip	islide.c	/^static Atom clip, utf8;$/;"	v	typeref:typename:Atom	file:
+colors	config.def.h	/^static const char *colors[SchemeLast][2] = {$/;"	v	typeref:typename:const char * [][2]
+colors	config.h	/^static const char *colors[SchemeLast][2] = {$/;"	v	typeref:typename:const char * [][2]
+command	config.def.h	/^static const char *command      = NULL;      $/;"	v	typeref:typename:const char *
+command	config.h	/^static const char *command      = NULL;      $/;"	v	typeref:typename:const char *
+config.h	Makefile	/^config.h:$/;"	t
+curr	islide.c	/^static struct item *prev, *curr, *next, *sel;$/;"	v	typeref:struct:item **	file:
+cursor	drw.h	/^	Cursor cursor;$/;"	m	struct:__anon0f5116480108	typeref:typename:Cursor
+cursor	islide.c	/^static size_t cursor;$/;"	v	typeref:typename:size_t	file:
+die	util.c	/^die(const char *fmt, ...) {$/;"	f	typeref:typename:void
+dist	Makefile	/^dist: clean$/;"	t
+dpy	drw.h	/^	Display *dpy;$/;"	m	struct:Fnt	typeref:typename:Display *
+dpy	drw.h	/^	Display *dpy;$/;"	m	struct:__anon0f5116480308	typeref:typename:Display *
+dpy	islide.c	/^static Display *dpy;$/;"	v	typeref:typename:Display *	file:
+dragmouse	islide.c	/^dragmouse() {$/;"	f	typeref:typename:void	file:
+drawable	drw.h	/^	Drawable drawable;$/;"	m	struct:__anon0f5116480308	typeref:typename:Drawable
+drawmenu	islide.c	/^drawmenu(void)$/;"	f	typeref:typename:void	file:
+drw	islide.c	/^static Drw *drw;$/;"	v	typeref:typename:Drw *	file:
+drw_clr_create	drw.c	/^drw_clr_create(Drw *drw, Clr *dest, const char *clrname)$/;"	f	typeref:typename:void
+drw_create	drw.c	/^drw_create(Display *dpy, int screen, Window root, unsigned int w, unsigned int h)$/;"	f	typeref:typename:Drw *
+drw_cur_create	drw.c	/^drw_cur_create(Drw *drw, int shape)$/;"	f	typeref:typename:Cur *
+drw_cur_free	drw.c	/^drw_cur_free(Drw *drw, Cur *cursor)$/;"	f	typeref:typename:void
+drw_font_getexts	drw.c	/^drw_font_getexts(Fnt *font, const char *text, unsigned int len, unsigned int *w, unsigned int *h/;"	f	typeref:typename:void
+drw_fontset_create	drw.c	/^drw_fontset_create(Drw* drw, const char *fonts[], size_t fontcount)$/;"	f	typeref:typename:Fnt *
+drw_fontset_free	drw.c	/^drw_fontset_free(Fnt *font)$/;"	f	typeref:typename:void
+drw_fontset_getwidth	drw.c	/^drw_fontset_getwidth(Drw *drw, const char *text)$/;"	f	typeref:typename:unsigned int
+drw_free	drw.c	/^drw_free(Drw *drw)$/;"	f	typeref:typename:void
+drw_map	drw.c	/^drw_map(Drw *drw, Window win, int x, int y, unsigned int w, unsigned int h)$/;"	f	typeref:typename:void
+drw_rect	drw.c	/^drw_rect(Drw *drw, int x, int y, unsigned int w, unsigned int h, int filled, int invert)$/;"	f	typeref:typename:void
+drw_resize	drw.c	/^drw_resize(Drw *drw, unsigned int w, unsigned int h)$/;"	f	typeref:typename:void
+drw_scm_create	drw.c	/^drw_scm_create(Drw *drw, const char *clrnames[], size_t clrcount)$/;"	f	typeref:typename:Clr *
+drw_setfontset	drw.c	/^drw_setfontset(Drw *drw, Fnt *set)$/;"	f	typeref:typename:void
+drw_setscheme	drw.c	/^drw_setscheme(Drw *drw, Clr *scm)$/;"	f	typeref:typename:void
+drw_text	drw.c	/^drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lpad, const char */;"	f	typeref:typename:int
+ecalloc	util.c	/^ecalloc(size_t nmemb, size_t size)$/;"	f	typeref:typename:void *
+embed	islide.c	/^static char *embed;$/;"	v	typeref:typename:char *	file:
+files.associations	.vscode/settings.json	/^    "files.associations": {$/;"	o
+fonts	config.def.h	/^static const char *fonts[] = {$/;"	v	typeref:typename:const char * []
+fonts	config.h	/^static const char *fonts[] = {$/;"	v	typeref:typename:const char * []
+fonts	drw.h	/^	Fnt *fonts;$/;"	m	struct:__anon0f5116480308	typeref:typename:Fnt *
+fstrncmp	islide.c	/^static int (*fstrncmp)(const char *, const char *, size_t) = strncmp;$/;"	v	typeref:typename:int (*)(const char *,const char *,size_t)	file:
+fstrstr	islide.c	/^static char *(*fstrstr)(const char *, const char *) = strstr;$/;"	v	typeref:typename:char * (*)(const char *,const char *)	file:
+functional	.vscode/settings.json	/^        "functional": "c",$/;"	s	object:files.associations
+gc	drw.h	/^	GC gc;$/;"	m	struct:__anon0f5116480308	typeref:typename:GC
+getrootptr	islide.c	/^getrootptr(int *x, int *y)$/;"	f	typeref:typename:int
+grabfocus	islide.c	/^grabfocus(void)$/;"	f	typeref:typename:void	file:
+grabkeyboard	islide.c	/^grabkeyboard(void)$/;"	f	typeref:typename:void	file:
+h	drw.h	/^	unsigned int h;$/;"	m	struct:Fnt	typeref:typename:unsigned int
+h	drw.h	/^	unsigned int w, h;$/;"	m	struct:__anon0f5116480308	typeref:typename:unsigned int
+incvalue	islide.c	/^static void incvalue(int increment)  {$/;"	f	typeref:typename:void	file:
+inputw	islide.c	/^static int inputw = 0, promptw;$/;"	v	typeref:typename:int	file:
+install	Makefile	/^install: all$/;"	t
+instantUI	README.md	/^# instantUI$/;"	c
+islide	Makefile	/^islide: islide.o drw.o util.o$/;"	t
+istream	.vscode/settings.json	/^        "istream": "c",$/;"	s	object:files.associations
+item	islide.c	/^struct item {$/;"	s	file:
+items	islide.c	/^static struct item *items = NULL;$/;"	v	typeref:struct:item *	file:
+keyboardvalue	config.def.h	/^static unsigned int keyboardvalue      = 0;$/;"	v	typeref:typename:unsigned int
+keyboardvalue	config.h	/^static unsigned int keyboardvalue      = 0;$/;"	v	typeref:typename:unsigned int
+keypress	islide.c	/^keypress(XKeyEvent *ev)$/;"	f	typeref:typename:void	file:
+left	islide.c	/^	struct item *left, *right;$/;"	m	struct:item	typeref:struct:item *	file:
+lines	config.def.h	/^static unsigned int lines      = 0;$/;"	v	typeref:typename:unsigned int
+lines	config.h	/^static unsigned int lines      = 0;$/;"	v	typeref:typename:unsigned int
+lrpad	islide.c	/^static int lrpad; \/* sum of left and right padding *\/$/;"	v	typeref:typename:int	file:
+main	islide.c	/^main(int argc, char *argv[])$/;"	f	typeref:typename:int
+matchend	islide.c	/^static struct item *matches, *matchend;$/;"	v	typeref:struct:item **	file:
+matches	islide.c	/^static struct item *matches, *matchend;$/;"	v	typeref:struct:item *	file:
+maxvalue	config.def.h	/^static unsigned int maxvalue      = 100;$/;"	v	typeref:typename:unsigned int
+maxvalue	config.h	/^static unsigned int maxvalue      = 100;$/;"	v	typeref:typename:unsigned int
+mcursor	islide.c	/^static Cur *mcursor[CurLast];$/;"	v	typeref:typename:Cur * []	file:
+mh	islide.c	/^static int bh, mw, mh, mx;$/;"	v	typeref:typename:int	file:
+modstat	islide.c	/^static int modstat = 0;$/;"	v	typeref:typename:int	file:
+mon	islide.c	/^static int mon = -1, screen;$/;"	v	typeref:typename:int	file:
+mw	islide.c	/^static int bh, mw, mh, mx;$/;"	v	typeref:typename:int	file:
+mx	islide.c	/^static int bh, mw, mh, mx;$/;"	v	typeref:typename:int	file:
+next	drw.h	/^	struct Fnt *next;$/;"	m	struct:Fnt	typeref:struct:Fnt *
+next	islide.c	/^static struct item *prev, *curr, *next, *sel;$/;"	v	typeref:struct:item ***	file:
+optional	.vscode/settings.json	/^        "optional": "c",$/;"	s	object:files.associations
+options	Makefile	/^options:$/;"	t
+ostream	.vscode/settings.json	/^        "ostream": "c",$/;"	s	object:files.associations
+out	islide.c	/^	int out;$/;"	m	struct:item	typeref:typename:int	file:
+parentwin	islide.c	/^static Window root, parentwin, win;$/;"	v	typeref:typename:Window	file:
+pattern	drw.h	/^	FcPattern *pattern;$/;"	m	struct:Fnt	typeref:typename:FcPattern *
+prev	islide.c	/^static struct item *prev, *curr, *next, *sel;$/;"	v	typeref:struct:item *	file:
+prompt	config.def.h	/^static const char *prompt      = NULL;      \/* -p  option; prompt to the left of input field *\/$/;"	v	typeref:typename:const char *
+prompt	config.h	/^static const char *prompt      = NULL;      \/* -p  option; prompt to the left of input field *\/$/;"	v	typeref:typename:const char *
+promptw	islide.c	/^static int inputw = 0, promptw;$/;"	v	typeref:typename:int	file:
+ratio	.vscode/settings.json	/^        "ratio": "c",$/;"	s	object:files.associations
+right	islide.c	/^	struct item *left, *right;$/;"	m	struct:item	typeref:struct:item **	file:
+root	drw.h	/^	Window root;$/;"	m	struct:__anon0f5116480308	typeref:typename:Window
+root	islide.c	/^static Window root, parentwin, win;$/;"	v	typeref:typename:Window	file:
+run	islide.c	/^run(void)$/;"	f	typeref:typename:void	file:
+scheme	drw.h	/^	Clr *scheme;$/;"	m	struct:__anon0f5116480308	typeref:typename:Clr *
+scheme	islide.c	/^static Clr *scheme[SchemeLast];$/;"	v	typeref:typename:Clr * []	file:
+screen	drw.h	/^	int screen;$/;"	m	struct:__anon0f5116480308	typeref:typename:int
+screen	islide.c	/^static int mon = -1, screen;$/;"	v	typeref:typename:int	file:
+sel	islide.c	/^static struct item *prev, *curr, *next, *sel;$/;"	v	typeref:struct:item ****	file:
+setup	islide.c	/^setup(void)$/;"	f	typeref:typename:void	file:
+spawn	islide.c	/^static void spawn(char *executable) {$/;"	f	typeref:typename:void	file:
+startvalue	config.def.h	/^static unsigned int startvalue      = 0;$/;"	v	typeref:typename:unsigned int
+startvalue	config.h	/^static unsigned int startvalue      = 0;$/;"	v	typeref:typename:unsigned int
+suffix	config.def.h	/^static const char *suffix      = NULL;    $/;"	v	typeref:typename:const char *
+suffix	config.h	/^static const char *suffix      = NULL;    $/;"	v	typeref:typename:const char *
+system_error	.vscode/settings.json	/^        "system_error": "c",$/;"	s	object:files.associations
+text	islide.c	/^	char *text;$/;"	m	struct:item	typeref:typename:char *	file:
+text	islide.c	/^static char text[BUFSIZ] = "";$/;"	v	typeref:typename:char[]	file:
+topbar	config.def.h	/^static int topbar = 1;                      \/* -b  option; if 0, dmenu appears at bottom     *\/$/;"	v	typeref:typename:int
+topbar	config.h	/^static int topbar = 1;                      \/* -b  option; if 0, dmenu appears at bottom     *\/$/;"	v	typeref:typename:int
+tuple	.vscode/settings.json	/^        "tuple": "c",$/;"	s	object:files.associations
+type_traits	.vscode/settings.json	/^        "type_traits": "c",$/;"	s	object:files.associations
+typeinfo	.vscode/settings.json	/^        "typeinfo": "c",$/;"	s	object:files.associations
+typenumber	islide.c	/^static void typenumber(int digit) {$/;"	f	typeref:typename:void	file:
+uninstall	Makefile	/^uninstall:$/;"	t
+usage	islide.c	/^usage(void)$/;"	f	typeref:typename:void	file:
+utf8	islide.c	/^static Atom clip, utf8;$/;"	v	typeref:typename:Atom	file:
+utf8decode	drw.c	/^utf8decode(const char *c, long *u, size_t clen)$/;"	f	typeref:typename:size_t	file:
+utf8decodebyte	drw.c	/^utf8decodebyte(const char c, size_t *i)$/;"	f	typeref:typename:long	file:
+utf8validate	drw.c	/^utf8validate(long *u, size_t i)$/;"	f	typeref:typename:size_t	file:
+utfbyte	drw.c	/^static const unsigned char utfbyte[UTF_SIZ + 1] = {0x80,    0, 0xC0, 0xE0, 0xF0};$/;"	v	typeref:typename:const unsigned char[]	file:
+utfmask	drw.c	/^static const unsigned char utfmask[UTF_SIZ + 1] = {0xC0, 0x80, 0xE0, 0xF0, 0xF8};$/;"	v	typeref:typename:const unsigned char[]	file:
+utfmax	drw.c	/^static const long utfmax[UTF_SIZ + 1] = {0x10FFFF, 0x7F, 0x7FF, 0xFFFF, 0x10FFFF};$/;"	v	typeref:typename:const long[]	file:
+utfmin	drw.c	/^static const long utfmin[UTF_SIZ + 1] = {       0,    0,  0x80,  0x800,  0x10000};$/;"	v	typeref:typename:const long[]	file:
+utility	.vscode/settings.json	/^        "utility": "c",$/;"	s	object:files.associations
+value	islide.c	/^static int value = 50;$/;"	v	typeref:typename:int	file:
+valuetrigger	islide.c	/^static void valuetrigger() {$/;"	f	typeref:typename:void	file:
+variant	.vscode/settings.json	/^        "variant": "c"$/;"	s	object:files.associations
+w	drw.h	/^	unsigned int w, h;$/;"	m	struct:__anon0f5116480308	typeref:typename:unsigned int
+win	islide.c	/^static Window root, parentwin, win;$/;"	v	typeref:typename:Window	file:
+worddelimiters	config.def.h	/^static const char worddelimiters[] = " ";$/;"	v	typeref:typename:const char[]
+worddelimiters	config.h	/^static const char worddelimiters[] = " ";$/;"	v	typeref:typename:const char[]
+xfont	drw.h	/^	XftFont *xfont;$/;"	m	struct:Fnt	typeref:typename:XftFont *
+xfont_create	drw.c	/^xfont_create(Drw *drw, const char *fontname, FcPattern *fontpattern)$/;"	f	typeref:typename:Fnt *	file:
+xfont_free	drw.c	/^xfont_free(Fnt *font)$/;"	f	typeref:typename:void	file:
+xic	islide.c	/^static XIC xic;$/;"	v	typeref:typename:XIC	file:

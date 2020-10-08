@@ -204,9 +204,11 @@ dragmouse() {
 			if ((ev.xmotion.time - lasttime) <= (1000 / 60))
 				continue;
 			lasttime = ev.xmotion.time;
+            if (ev.xmotion.x_root < mx)
+                continue;
 			if (!lastx)
 				lastx = ev.xmotion.x_root;
-			
+
 			if (abs(lastx - ev.xmotion.x_root) > (mw / maxvalue)) {
 				value = (ev.xmotion.x_root - mx) / (mw / maxvalue);
 				drawmenu();
