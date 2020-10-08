@@ -167,8 +167,12 @@ static void incvalue(int increment)  {
 
 	if (value + increment >= 0 && value + increment <= maxvalue)
 		value+=increment;
-	else
-		return;
+    else {
+        if (value + increment <= 0)
+            value = 0;
+        else
+            value = maxvalue;
+    }
 	valuetrigger();
 	drawmenu();
 }
