@@ -99,7 +99,7 @@ drawmenu(void)
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_rect(drw, 0, 0, mw, mh, 1, 1);
 	drw_setscheme(drw, scheme[SchemeSel]);
-	drw_rect(drw, 0, 0, value * (mw / maxvalue), mh, 1, 1);
+	drw_rect(drw, 0, 0, value * ((float)mw / maxvalue), mh, 1, 1);
 
 	drw_text(drw, 0,0,TEXTW(outputstr), mh, 10, outputstr, 0);
 	drw_map(drw, win, 0, 0, mw, mh);
@@ -214,7 +214,7 @@ dragmouse() {
 				lastx = ev.xmotion.x_root;
 
 			if (abs(lastx - ev.xmotion.x_root) > (mw / maxvalue)) {
-				value = (ev.xmotion.x_root - mx) / (mw / maxvalue);
+				value = (ev.xmotion.x_root - mx) / ((float)mw / maxvalue);
 				drawmenu();
 				valuetrigger();
 				lastx = ev.xmotion.x_root;
@@ -350,7 +350,7 @@ buttonpress(XEvent *ev)
 				exit(0);
 				break;
 			case Button1:
-				value = (ev->xbutton.x_root - mx) / (mw / maxvalue);
+				value = (ev->xbutton.x_root - mx) / ((float)mw / maxvalue);
 				valuetrigger();
 				drawmenu();
 				dragmouse();
