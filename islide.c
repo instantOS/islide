@@ -267,11 +267,15 @@ keypress(XKeyEvent *ev)
 		switch (ksym)
 		{
 		case XK_h:
+			incvalue(modstat ? -1 : -20);
+			break;
 		case XK_j:
 		case XK_Left:
 			incvalue(modstat ? -1 : -5);
 			break;
 		case XK_l:
+			incvalue(modstat ? -1 : 20);
+			break;
 		case XK_k:
 		case XK_Right:
 			incvalue(modstat ? 1 : 5);
