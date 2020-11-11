@@ -10,6 +10,7 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include <X11/XF86keysym.h>
 #include <X11/Xutil.h>
 #ifdef XINERAMA
 #include <X11/extensions/Xinerama.h>
@@ -286,9 +287,12 @@ keypress(XKeyEvent *ev)
 		case XK_Down:
 			incvalue(-20);
 			break;
+        case XF86XK_AudioRaiseVolume:
+        case XK_equal:
 		case XK_plus:
 			incvalue(1);
 			break;
+        case XF86XK_AudioLowerVolume:
 		case XK_minus:
 			incvalue(-1);
 			break;
