@@ -333,13 +333,13 @@ keypress(XKeyEvent *ev)
 			typenumber(9);
 			break;
 		case XK_Return:
-			if (!keyboardvalue)
-				break;
-			value = keyboardvalue;
-			keyboardvalue = 0;
-			valuetrigger();
-			drawmenu();
-			break;
+            if (keyboardvalue) {
+                value = keyboardvalue;
+                keyboardvalue = 0;
+                valuetrigger();
+                drawmenu();
+                break;
+            }
 		default:
 			cleanup();
 			exit(0);
