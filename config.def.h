@@ -12,8 +12,8 @@ static const char *suffix      = NULL;
 
 static const char *colors[SchemeLast][2] = {
 	/*     fg         bg       */
-	[SchemeNorm] = { "#bbbbbb", "#292F3A" },
-	[SchemeSel] = { "#eeeeee", "#5294E2" },
+	[SchemeNorm] = { "#bbbbbb", "#121212" },
+	[SchemeSel] = { "#eeeeee", "#88B2F6" },
 	[SchemeOut] = { "#000000", "#00ffff" },
 };
 /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
