@@ -30,7 +30,7 @@
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
 
 /* enums */
-enum { SchemeNorm, SchemeSel, SchemeOut, SchemeLast }; /* color schemes */
+enum { SchemeNorm, SchemeSel, SchemeDarkSel, SchemeOut, SchemeLast }; /* color schemes */
 enum { CurNormal, CurMove, CurLast }; /* cursor */
 
 struct item {
@@ -86,6 +86,8 @@ drawmenu(void)
 	unsigned int curpos;
 	struct item *item;
 	int x = 0, y = 0, w;
+    int outw;
+    int progresswidth;
 	char valuestr[100];
 	char outputstr[100];
 	sprintf(valuestr, "  %d", value); 
@@ -97,12 +99,19 @@ drawmenu(void)
 		strcpy(outputstr, valuestr);
 	}
 
+    progresswidth = value * ((float)mw / maxvalue);
+    outw = TEXTW(outputstr);
+
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_rect(drw, 0, 0, mw, mh, 1, 1);
-	drw_setscheme(drw, scheme[SchemeSel]);
-	drw_rect(drw, 0, 0, value * ((float)mw / maxvalue), mh, 1, 1);
+    if (progresswidth > (outw - 10))
+        drw_setscheme(drw, scheme[SchemeDarkSel]);
+    else
+        drw_setscheme(drw, scheme[SchemeSel]);
+	drw_rect(drw, 0, 0, progresswidth, mh, 1, 1);
 
-	drw_text(drw, 0,0,TEXTW(outputstr), mh, 10, outputstr, 0);
+
+	drw_text(drw, 0,0,outw, mh, 10, outputstr, 0);
 	drw_map(drw, win, 0, 0, mw, mh);
 }
 
