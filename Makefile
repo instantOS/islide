@@ -6,14 +6,7 @@ include config.mk
 SRC = drw.c islide.c util.c
 OBJ = $(SRC:.c=.o)
 
-all: clean options islide
-
-options:
-	@echo islide build options:
-	@echo "CFLAGS   = $(CFLAGS)"
-	@echo "LDFLAGS  = $(LDFLAGS)"
-	@echo "CC       = $(CC)"
-
+all: islide
 .c.o:
 	$(CC) -c $(CFLAGS) $<
 
@@ -48,6 +41,6 @@ install: all
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/islide\
-		$(DESTDIR)$(MANPREFIX)/man1/islide.1\
+		$(DESTDIR)$(MANPREFIX)/man1/islide.1
 
-.PHONY: all options clean dist install uninstall
+.PHONY: all clean dist install uninstall
