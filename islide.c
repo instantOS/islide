@@ -24,7 +24,6 @@
 /* macros */
 #define INTERSECT(x,y,w,h,r)  (MAX(0, MIN((x)+(w),(r).x_org+(r).width)  - MAX((x),(r).x_org)) \
                              * MAX(0, MIN((y)+(h),(r).y_org+(r).height) - MAX((y),(r).y_org)))
-#define LENGTH(X)             (sizeof X / sizeof X[0])
 #define TEXTW(X)              (drw_fontset_getwidth(drw, (X)) + lrpad)
 #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
@@ -33,6 +32,7 @@
 enum { SchemeNorm, SchemeSel, SchemeDarkSel, SchemeOut, SchemeLast }; /* color schemes */
 enum { CurNormal, CurMove, CurLast }; /* cursor */
 
+
 struct item {
 	char *text;
 	struct item *left, *right;
@@ -40,8 +40,8 @@ struct item {
 };
 
 static char text[BUFSIZ] = "";
-static int value = 50;
 static char *embed;
+static int value = 50;
 static int bh, mw, mh, mx;
 static int inputw = 0, promptw;
 static int lrpad; /* sum of left and right padding */
@@ -66,6 +66,13 @@ static Cur *mcursor[CurLast];
 static int (*fstrncmp)(const char *, const char *, size_t) = strncmp;
 static char *(*fstrstr)(const char *, const char *) = strstr;
 
+static unsigned int
+textw_clamp(const char *str, unsigned int n)
+{
+	unsigned int w = drw_fontset_getwidth_clamp(drw, str, n) + lrpad;
+	return MIN(w, n);
+}
+
 
 static void
 cleanup(void)
@@ -75,6 +82,9 @@ cleanup(void)
 	XUngrabKey(dpy, AnyKey, AnyModifier, root);
 	for (i = 0; i < SchemeLast; i++)
 		free(scheme[i]);
+	for (i = 0; items && items[i].text; ++i)
+		free(items[i].text);
+	free(items);
 	drw_free(drw);
 	XSync(dpy, False);
 	XCloseDisplay(dpy);
@@ -88,7 +98,7 @@ drawmenu(void)
 	int x = 0, y = 0, w;
     int outw;
     int progresswidth;
-	char valuestr[100];
+    char valuestr[100];
 	char outputstr[100];
 	sprintf(valuestr, "  %d", value); 
 
@@ -104,6 +114,7 @@ drawmenu(void)
 
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_rect(drw, 0, 0, mw, mh, 1, 1);
+
     if (progresswidth > (outw - 10))
         drw_setscheme(drw, scheme[SchemeDarkSel]);
     else
@@ -162,11 +173,11 @@ static void valuetrigger() {
 	char valuestring[100];
 	char finalcmd[1024];
 
-	sprintf(valuestring, "%d", value);
+    sprintf(valuestring, "%d", value);
 	if (command)
 		strcpy(finalcmd, command);
 	else
-		strcpy(finalcmd, "/usr/share/instantassist/utils/p.sh ");		
+		strcpy(finalcmd, "/usr/share/instantassist/utils/p.sh ");
 	strncat(finalcmd, valuestring, 10);
 	if (suffix)
 		strncat(finalcmd, suffix, 1000);
@@ -174,7 +185,6 @@ static void valuetrigger() {
 }
 
 static void incvalue(int increment)  {
-
 	if (value + increment >= 0 && value + increment <= maxvalue)
 		value+=increment;
     else {
@@ -183,9 +193,14 @@ static void incvalue(int increment)  {
         else
             value = maxvalue;
     }
-	valuetrigger();
+    valuetrigger();
 	drawmenu();
 }
+
+
+
+
+
 
 int
 getrootptr(int *x, int *y)
@@ -222,33 +237,34 @@ dragmouse() {
                 continue;
 			if (!lastx)
 				lastx = ev.xmotion.x_root;
-
+			
 			if (abs(lastx - ev.xmotion.x_root) > (mw / maxvalue)) {
 				value = (ev.xmotion.x_root - mx) / ((float)mw / maxvalue);
 				drawmenu();
-				valuetrigger();
+                valuetrigger();
 				lastx = ev.xmotion.x_root;
 			}
 			break;
 		}
 	} while (ev.type != ButtonRelease);
-	if (ev.xmotion.y_root > 100) {
+    if (ev.xmotion.y_root > 100) {
 		cleanup();
 		exit(1);
 	}
+
 	XUngrabPointer(dpy, CurrentTime);
 }
 
 static void typenumber(int digit) {
-	if (modstat) {
-		if (keyboardvalue * 10 + digit >= maxvalue) {
-			keyboardvalue = maxvalue;
-		} else {
-			keyboardvalue = keyboardvalue * 10;
-			keyboardvalue += digit;
-		}
+    if (modstat) {
+        if (keyboardvalue * 10 + digit >= maxvalue) {
+            keyboardvalue = maxvalue;
+        } else {
+            keyboardvalue = keyboardvalue * 10;
+            keyboardvalue += digit;
+        }
 	} else {
-		if (digit == 0)
+        if (digit == 0)
 			digit = 9;
 		else
 			digit -=1;
@@ -259,17 +275,18 @@ static void typenumber(int digit) {
 	}
 }
 
+
 static void
 keypress(XKeyEvent *ev)
 {
-	char buf[32];
-
+	char buf[64];
 	int len;
-
-	KeySym ksym;
+	KeySym ksym = NoSymbol;
 	Status status;
 
 	len = XmbLookupString(xic, ev, buf, sizeof buf, &ksym, &status);
+
+
 	if (ksym == XK_Shift_L) {
 		modstat = 1;
 		return;
@@ -277,18 +294,18 @@ keypress(XKeyEvent *ev)
 		switch (ksym)
 		{
 		case XK_h:
-			incvalue(modstat ? -1 : -20);
+            incvalue(modstat ? -1 : -20);
 			break;
 		case XK_j:
 		case XK_Left:
-			incvalue(modstat ? -1 : -5);
+            incvalue(modstat ? -1 : -5);
 			break;
 		case XK_l:
 			incvalue(modstat ? -1 : 20);
 			break;
 		case XK_k:
 		case XK_Right:
-			incvalue(modstat ? 1 : 5);
+            incvalue(modstat ? 1 : 5);
 			break;
 		case XK_Up:
 			incvalue(20);
@@ -355,7 +372,12 @@ keypress(XKeyEvent *ev)
 			break;
 		}
 	}
+
+draw:
+	drawmenu();
 }
+
+
 
 static void
 buttonpress(XEvent *ev)
@@ -370,11 +392,11 @@ buttonpress(XEvent *ev)
 				value = (ev->xbutton.x_root - mx) / ((float)mw / maxvalue);
 				valuetrigger();
 				drawmenu();
-				dragmouse();
+                dragmouse();
 				break;
 			case Button2:
 				value = startvalue;
-				valuetrigger();
+                valuetrigger();
 				drawmenu();
 				break;
 			case Button5:
@@ -422,12 +444,11 @@ run(void)
 				XRaiseWindow(dpy, win);
 			break;
 		case ButtonPress:
-			buttonpress(&ev);
+            buttonpress(&ev);
 			break;
 		}
 	}
 }
-
 
 static void
 setup(void)
@@ -444,11 +465,12 @@ setup(void)
 	Window pw;
 	int a, di, n, area = 0;
 #endif
-	if (startvalue)
-		value = startvalue;
-	else
-		value = maxvalue / 2;
 	/* init appearance */
+    if (startvalue)
+		value = startvalue;
+    else
+        value = maxvalue / 2;
+
 	for (j = 0; j < SchemeLast; j++)
 		scheme[j] = drw_scm_create(drw, colors[j], 2);
 
@@ -482,7 +504,7 @@ setup(void)
 		/* no focused window is on screen, so use pointer location instead */
 		if (mon < 0 && !area && XQueryPointer(dpy, root, &dw, &dw, &x, &y, &di, &di, &du))
 			for (i = 0; i < n; i++)
-				if (INTERSECT(x, y, 1, 1, info[i]))
+				if (INTERSECT(x, y, 1, 1, info[i]) != 0)
 					break;
 
 		x = info[i].x_org;
@@ -499,15 +521,15 @@ setup(void)
 		y = topbar ? 0 : wa.height - mh;
 		mw = wa.width;
 	}
-	mx = x;
+    mx = x;
 	promptw = (prompt && *prompt) ? TEXTW(prompt) - lrpad / 4 : 0;
-	inputw = MIN(inputw, mw/3);
+	inputw = mw / 3; /* input width: ~33% of monitor width */
 
 	/* create menu window */
 	swa.override_redirect = True;
 	swa.background_pixel = scheme[SchemeNorm][ColBg].pixel;
 	swa.event_mask = ExposureMask | KeyPressMask | VisibilityChangeMask | ButtonPressMask;
-	win = XCreateWindow(dpy, parentwin, x, y, mw, mh, 0,
+	win = XCreateWindow(dpy, root, x, y, mw, mh, 0,
 	                    CopyFromParent, CopyFromParent, CopyFromParent,
 	                    CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
 	XSetClassHint(dpy, win, &ch);
@@ -522,6 +544,7 @@ setup(void)
 
 	XMapRaised(dpy, win);
 	if (embed) {
+		XReparentWindow(dpy, win, parentwin, x, y);
 		XSelectInput(dpy, parentwin, FocusChangeMask | SubstructureNotifyMask);
 		if (XQueryTree(dpy, parentwin, &dw, &w, &dws, &du) && dws) {
 			for (i = 0; i < du && dws[i] != win; ++i)
@@ -530,7 +553,7 @@ setup(void)
 		}
 		grabfocus();
 	}
-	mcursor[CurNormal] = drw_cur_create(drw, XC_left_ptr);
+    mcursor[CurNormal] = drw_cur_create(drw, XC_left_ptr);
 	mcursor[CurMove] = drw_cur_create(drw, XC_fleur);
 
 	drw_resize(drw, mw, mh);
@@ -540,9 +563,8 @@ setup(void)
 static void
 usage(void)
 {
-	fputs("usage: dmenu [-bfiv] [-l lines] [-p prompt] [-fn font] [-m monitor]\n"
-	      "             [-nb color] [-nf color] [-sb color] [-sf color] [-w windowid]\n", stderr);
-	exit(1);
+	die("usage: islide [-bfiv] [-l lines] [-p prompt] [-fn font] [-m monitor]\n"
+	    "             [-nb color] [-nf color] [-sb color] [-sf color] [-w windowid]");
 }
 
 int
@@ -554,27 +576,26 @@ main(int argc, char *argv[])
 	for (i = 1; i < argc; i++)
 		/* these options take no arguments */
 		if (!strcmp(argv[i], "-v")) {      /* prints version information */
-			puts("dmenu-"VERSION);
+			puts("islide-"VERSION);
 			exit(0);
 		} else if (!strcmp(argv[i], "-b")) /* appears at the bottom of the screen */
 			topbar = 0;
 		else if (!strcmp(argv[i], "-f"))   /* grabs keyboard before reading stdin */
 			fast = 1;
-		else if (!strcmp(argv[i], "-i")) { /* case-insensitive item matching */
-			fstrncmp = strncasecmp;
-		} else if (i + 1 == argc)
+		 else if (i + 1 == argc)
 			usage();
 		/* these options take one argument */
-		else if (!strcmp(argv[i], "-s"))   /* number of lines in vertical list */
+        else if (!strcmp(argv[i], "-s"))   /* number of lines in vertical list */
 			startvalue = atoi(argv[++i]);
 		else if (!strcmp(argv[i], "-m"))
 			maxvalue = atoi(argv[++i]);
 		else if (!strcmp(argv[i], "-p"))   /* adds prompt to left of input field */
 			prompt = argv[++i];
-		else if (!strcmp(argv[i], "-c"))   /* adds prompt to left of input field */
+        else if (!strcmp(argv[i], "-c"))   /* adds prompt to left of input field */
 			command = argv[++i];
 		else if (!strcmp(argv[i], "-a"))   /* adds prompt to left of input field */
 			suffix = argv[++i];
+
 		else if (!strcmp(argv[i], "-fn"))  /* font or font set */
 			fonts[0] = argv[++i];
 		else if (!strcmp(argv[i], "-nb"))  /* normal background color */
@@ -611,8 +632,7 @@ main(int argc, char *argv[])
 		die("pledge");
 #endif
 
-		grabkeyboard();
-	
+    grabkeyboard();
 	setup();
 	run();
 
